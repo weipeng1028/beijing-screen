@@ -1,0 +1,16 @@
+{
+  "id": "1500397",
+  "name": "北京检察院",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "3583374",
+      "name": "微信",
+      "font_class": "weixin",
+      "unicode": "e62d",
+      "unicode_decimal": 58925
+    }
+  ]
+}
