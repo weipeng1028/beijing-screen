@@ -67,7 +67,7 @@
                       <span style="width:12%;text-align: left;">{{item.wx}}</span>
                       <span style="width:12%;text-align: left;">{{item.wb}}</span>
                       <span style="width:12%;text-align: left;">{{item.tt}}</span>
-                      <span style="width:12%;text-align: left;">{{item.tt}}</span>
+                      <span style="width:12%;text-align: left;">{{item.dy}}</span>
                       <span style="width:12%;text-align: left;">{{item.total}}</span>
                     </li>
                   </ul>
