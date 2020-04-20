@@ -152,7 +152,7 @@
               <el-button v-for="(item, i) in this.regionData"
                          :key="i"
                          size="small"
-                         :class="cityIndex-1===i?'btn-success':''"
+                         :class="[idx === i ? 'btn-success' : '']"
                          @click="getCityData(item,i)">{{item.name}}</el-button>
             </div>
             <div id="map-beijing"
@@ -328,6 +328,7 @@ export default {
   name: 'Bigscreen',
   data () {
     return {
+      idx: undefined,
       imgHeight: '',
       colum: 1,
       wxActive: true,
@@ -502,6 +503,8 @@ export default {
               clearInterval(than.fhourTime)
               than.fhourTime = undefined
               than.region = e.name
+              than.idx = undefined
+              than.cityShow = false
               than.getarticle()
             })
             // 地图定义轮播
@@ -700,7 +703,7 @@ export default {
                 showSymbol: false,
                 lineStyle: {
                   normal: {
-                    width: 1
+                    width: 3
                   }
                 },
                 areaStyle: {
@@ -734,7 +737,7 @@ export default {
                 showSymbol: false,
                 lineStyle: {
                   normal: {
-                    width: 1
+                    width: 3
                   }
                 },
                 areaStyle: {
@@ -768,7 +771,7 @@ export default {
                 showSymbol: false,
                 lineStyle: {
                   normal: {
-                    width: 1
+                    width: 3
                   }
                 },
                 areaStyle: {
@@ -802,7 +805,7 @@ export default {
                 showSymbol: false,
                 lineStyle: {
                   normal: {
-                    width: 1
+                    width: 3
                   }
                 },
                 areaStyle: {
@@ -1061,6 +1064,7 @@ export default {
     // 地区数据
     getCityData (item, i) {
       this.cityShow = true
+      this.idx = i
       this.regionData.filter(arr => arr.name === item.name).forEach(getArr => {
         this.getData = getArr
         if (!this.getData.dyPinglun) {
@@ -1456,11 +1460,11 @@ export default {
   text-align: center;
   font-size: 1vw;
   background-color: rgba($color: #00ceff, $alpha: 0.3);
-  color: #00ceff;
+  color: #fff;
   border: 1px solid #006aff;
 }
 .center-btn .el-button:hover {
-  color: #fff;
+  color: #00ceff;
 }
 .tab-title {
   cursor: pointer;
@@ -1491,8 +1495,7 @@ export default {
 .dis-none {
   display: none;
 }
-.btn-success {
-  background-color: #00ceff;
-  color: #fff;
+.center-btn .btn-success {
+  color: #00ceff;
 }
 </style>
