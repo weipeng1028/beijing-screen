@@ -271,7 +271,7 @@
                         class="show-article">
                       <span @click="activeWeb(item)"
                             class="new-company"
-                            v-html="item.title"></span>
+                            v-text="item.title"></span>
                       <span style="width:13%;text-align: center;">{{item.readNum}}</span>
                     </li>
                   </ul>
@@ -924,6 +924,8 @@ export default {
     // 地区文章数据获取
     getarticle () {
       this.StopList()
+      var titles = ''
+      var reg = /[\u4e00-\u9fa5]/g
       this.$http.get(this.$api.channelsLatestReadNum, { params: { id: this.articleType, region: this.region } })
         .then(res => {
           if (res.data.data) {
@@ -953,6 +955,14 @@ export default {
               this.dyActive = true
               this.tdActive = false
             }
+            this.ayy.forEach(item => {
+              if (item.title) {
+                titles = item.title.match(reg)
+                item.title = titles.join('')
+              } else {
+                item.title = '转发微博'
+              }
+            })
             this.UpList()
           }
         })
@@ -1384,6 +1394,9 @@ export default {
   text-overflow: ellipsis;
   cursor: pointer;
   text-align: left;
+}
+.new-company img{
+  display: none;
 }
 .fine-img {
   position: absolute;
