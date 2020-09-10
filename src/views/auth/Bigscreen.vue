@@ -117,27 +117,7 @@
                    class="tuxing-size"
                    @mouseenter="enter()"
                    @mouseleave="leave()"></div>
-              <!-- <p class="title">
-                优秀作品展示
-              </p>
-              <div class="tuxing-fine article-content" ref="element">
-                <div class="element-content">
-                  <el-carousel indicator-position="none" :autoplay="true" :interval="5000" height="740px">
-                    <el-carousel-item v-for="(item,index) in images" :key="index">
-                      <img :src="item.cover_url" alt="123" class="fine-img" @click="routerWeb(item)">
-                      <img :src="require('@/assets/images/text/autoPlay.png')" class="center-img">
-                    </el-carousel-item>
-                  </el-carousel>
-                </div>
-              </div> -->
             </div>
-            <!-- 阅读量 -->
-            <!-- <div class="area-rank fine">
-              <p class="title">
-                阅读量趋势
-              </p>
-              <div id="area-fine-tuxing" class="tuxing-size" @mouseenter="enter()" @mouseleave="leave()"></div>
-            </div> -->
           </div>
         </el-col>
         <!-- 中心 -->
@@ -1395,7 +1375,7 @@ export default {
   cursor: pointer;
   text-align: left;
 }
-.new-company img{
+.new-company img {
   display: none;
 }
 .fine-img {
@@ -1472,6 +1452,7 @@ export default {
   line-height: 2vw;
   text-align: center;
   font-size: 1vw;
+  border-radius: 4px;
   background-color: rgba($color: #00ceff, $alpha: 0.3);
   color: #fff;
   border: 1px solid #006aff;
