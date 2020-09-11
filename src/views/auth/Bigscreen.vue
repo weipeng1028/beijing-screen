@@ -5,8 +5,7 @@
       <div class="top-bg">
         <span class="headline">新媒体大屏统计分析</span>
       </div>
-      <el-row :gutter="10"
-              class="content">
+      <el-row :gutter="10" class="content">
         <!-- 左侧栏 -->
         <el-col :xs="7"
                 :sm="7"
@@ -73,7 +72,7 @@
                   </ul>
                 </div>
               </div>
-              <div id="area-rank-tuxing"
+              <div id="area-tuxing"
                    class="article-content"
                    v-else>
                 <p class="article-top">
@@ -111,7 +110,7 @@
             <!-- 阅读量趋势 -->
             <div class="area-rank fine area-article">
               <p class="title">
-                阅读量趋势
+                近一周阅读量趋势
               </p>
               <div id="area-fine-tuxing"
                    class="tuxing-size"
@@ -140,63 +139,75 @@
             <div class="center-abs"
                  :class="cityShow?'':'dis-none'">
               <p>
-                <span>名称:</span><br>
+                <span class="center-abs-title">名称:</span>
                 <span v-text="this.getData.name"
                       class="center-abs-name"></span>
               </p>
               <div v-if="this.articleType===1">
-                <p>微信:</p>
                 <p>
-                  <span>阅读数:</span>
+                  <span class="center-abs-title">数据源:</span>
+                  <span>微信</span>
+                </p>
+                <p>
+                  <span class="center-abs-title">阅读数:</span>
                   <span v-text="this.getData.wxRead"></span>
                 </p>
                 <p>
-                  <span>点赞数:</span>
+                  <span class="center-abs-title">点赞数:</span>
                   <span v-text="this.getData.wxDianzan"></span>
                 </p>
               </div>
               <div v-if="this.articleType===2">
-                <p>微博:</p>
                 <p>
-                  <span>点赞数:</span>
+                  <span class="center-abs-title">数据源:</span>
+                  <span>微博</span>
+                </p>
+                <p>
+                  <span class="center-abs-title">点赞数:</span>
                   <span v-text="this.getData.wbDianzan"></span>
                 </p>
                 <p>
-                  <span>评论数:</span>
+                  <span class="center-abs-title">评论数:</span>
                   <span v-text="this.getData.wbPinglun"></span>
                 </p>
                 <p>
-                  <span>转发数:</span>
+                  <span class="center-abs-title">转发数:</span>
                   <span v-text="this.getData.wbZhuanfa"></span>
                 </p>
               </div>
               <div v-if="this.articleType===3">
-                <p>今日头条:</p>
                 <p>
-                  <span>阅读数:</span>
+                  <span class="center-abs-title">数据源:</span>
+                  <span>今日头条</span>
+                </p>
+                <p>
+                  <span class="center-abs-title">阅读数:</span>
                   <span v-text="this.getData.jrttRead"></span>
                 </p>
                 <p>
-                  <span>评论数:</span>
+                  <span class="center-abs-title">评论数:</span>
                   <span v-text="this.getData.jrttPinglun"></span>
                 </p>
                 <p>
-                  <span>转发数:</span>
+                  <span class="center-abs-title">转发数:</span>
                   <span v-text="this.getData.jrttZhuanfa"></span>
                 </p>
               </div>
               <div v-if="this.articleType===4">
-                <p>抖音:</p>
                 <p>
-                  <span>点赞数:</span>
+                  <span class="center-abs-title">数据源:</span>
+                  <span>抖音</span>
+                </p>
+                <p>
+                  <span class="center-abs-title">点赞数:</span>
                   <span v-text="this.getData.dyDianzan"></span>
                 </p>
                 <p>
-                  <span>评论数:</span>
+                  <span class="center-abs-title">评论数:</span>
                   <span v-text="this.getData.dyPinglun"></span>
                 </p>
                 <p>
-                  <span>转发数:</span>
+                  <span class="center-abs-title">转发数:</span>
                   <span v-text="this.getData.dyZhuanfa"></span>
                 </p>
               </div>
@@ -214,7 +225,7 @@
             <div class="top-num">
               <div class="wb-fans top-box">
                 <div>
-                  <p class="name">总文章发布条数</p>
+                  <p class="name">近一月文章发布条数</p>
                   <p class="num"
                      v-text="this.totalPublish"></p>
                 </div>
@@ -261,7 +272,7 @@
             <!-- 优秀作品展示 -->
             <div class="area-article fine area-rank">
               <p class="title">
-                优秀作品展示
+                最新短视频展示
               </p>
               <div class="tuxing-fine article-content"
                    ref="element">
@@ -272,7 +283,7 @@
                                :height="imgHeight">
                     <el-carousel-item v-for="(item,index) in images"
                                       :key="index">
-                      <img :src="item.cover_url"
+                      <img :src="item.coverUrl"
                            alt="123"
                            class="fine-img"
                            ref="imgHeight"
@@ -308,7 +319,8 @@ export default {
   name: 'Bigscreen',
   data () {
     return {
-      idx: undefined,
+      departmentName: '',
+      idx: null,
       imgHeight: '',
       colum: 1,
       wxActive: true,
@@ -317,7 +329,7 @@ export default {
       tdActive: false,
       areaRank: true,
       cityIndex: 0,
-      cityData: undefined, // 地区地址定时器
+      cityData: null, // 地区地址定时器
       cityShow: false, // 地区地址定时器
       getData: '', // 地区数据
       regions: [],
@@ -340,10 +352,10 @@ export default {
       animateHot: false, // 热门文章排行榜类名设置
       animateList: false, // 区排行榜类名设置
       animateRank: false, // 文章列表类名设置
-      intNumHot: undefined, // 热门文章排行榜定时器
-      intNumList: undefined, // 区排行榜定时器
-      intNumRank: undefined, // 文章列表定时器
-      fhourTime: undefined, // 地图定时器
+      intNumHot: null, // 热门文章排行榜定时器
+      intNumList: null, // 区排行榜定时器
+      intNumRank: null, // 文章列表定时器
+      fhourTime: null, // 地图定时器
       timer: '', //  阅读量定时器
       option: {}, // 阅读量数据图表
       faultByHourIndex: '', // 阅读量播放所在下标
@@ -359,6 +371,8 @@ export default {
   methods: {
     // 地图
     monitorMap () {
+      window.clearInterval(this.fhourTime)
+      this.fhourTime = null
       let monitorMap = echarts.init(document.getElementById('map-beijing'))
       this.$http.get(this.$api.regions, { params: { id: this.articleType } })
         .then(res => {
@@ -402,17 +416,17 @@ export default {
                 },
                 formatter: function (params, ticket, callback) {
                   if (params.data.wxRead) {
-                    return '地区名称：' + params.data.name +
-                      '<br/>' + '微信：' + '<br/>' + '阅读数：' + params.data.wxRead + '<br/>' + '点赞数：' + params.data.wxDianzan
+                    return '地区名：' + params.data.name +
+                      '<br/>' + '数据源：微信' + '<br/>' + '阅读数：' + params.data.wxRead + '<br/>' + '点赞数：' + params.data.wxDianzan
                   } else if (params.data.wbDianzan) {
-                    return '地区名称：' + params.data.name +
-                      '<br/>' + '微博：' + '<br/>' + '点赞数：' + params.data.wbDianzan + '<br/>' + '评论数：' + params.data.wbPinglun + '<br/>' + '转发数：' + params.data.wbZhuanfa
+                    return '地区名：' + params.data.name +
+                      '<br/>' + '数据源：微博' + '<br/>' + '点赞数：' + params.data.wbDianzan + '<br/>' + '评论数：' + params.data.wbPinglun + '<br/>' + '转发数：' + params.data.wbZhuanfa
                   } else if (params.data.jrttRead) {
-                    return '地区名称：' + params.data.name +
-                      '<br/>' + '今日头条：' + '<br/>' + '阅读数：' + params.data.jrttRead + '<br/>' + '评论数：' + params.data.jrttPinglun + '<br/>' + '转发数：' + params.data.jrttZhuanfa
+                    return '地区名：' + params.data.name +
+                      '<br/>' + '数据源：今日头条' + '<br/>' + '阅读数：' + params.data.jrttRead + '<br/>' + '评论数：' + params.data.jrttPinglun + '<br/>' + '转发数：' + params.data.jrttZhuanfa
                   } else if (params.data.dyDianzan) {
-                    return '地区名称：' + params.data.name +
-                      '<br/>' + '抖音：' + '<br/>' + '点赞数：' + params.data.dyDianzan + '<br/>' + '评论数：' + params.data.dyPinglun + '<br/>' + '转发数：' + params.data.dyZhuanfa
+                    return '地区名：' + params.data.name +
+                      '<br/>' + '数据源：抖音' + '<br/>' + '点赞数：' + params.data.dyDianzan + '<br/>' + '评论数：' + params.data.dyPinglun + '<br/>' + '转发数：' + params.data.dyZhuanfa
                   }
                 }
               },
@@ -446,11 +460,11 @@ export default {
                   data: this.regions,
                   map: '北京',
                   label: {
-                    show: false, // 是否显示市
+                    show: true, // 是否显示市
                     textStyle: {
-                      color: '#fb6a00', // 文字颜色
-                      fontWeight: 900,
-                      fontSize: 25, // 文字大小
+                      color: '#333', // 文字颜色
+                      fontWeight: 500,
+                      fontSize: 20, // 文字大小
                       backgroundColor: 'rgba(0,0,0,0)' // 透明度0清空文字背景
                     }
                   },
@@ -475,48 +489,51 @@ export default {
             this.mapOption = option
             this.monitor = monitorMap
             monitorMap.setOption(option)
+            window.addEventListener('resize', function () {
+              monitorMap.resize()
+            })
             let than = this
             var hourIndex = 0
-            clearInterval(than.fhourTime)
-            than.fhourTime = undefined
             monitorMap.on('click', function (e) {
-              clearInterval(than.fhourTime)
-              than.fhourTime = undefined
+              window.clearInterval(than.fhourTime)
+              than.fhourTime = null
               than.region = e.name
-              than.idx = undefined
+              than.idx = null
               than.cityShow = false
               than.getarticle()
             })
             // 地图定义轮播
-            than.fhourTime = setInterval(function () {
-              monitorMap.dispatchAction({
-                type: 'downplay',
-                seriesIndex: 0
-              })
-              monitorMap.dispatchAction({
-                type: 'highlight',
-                seriesIndex: 0,
-                dataIndex: hourIndex
-              })
-              monitorMap.dispatchAction({
-                type: 'showTip',
-                seriesIndex: 0,
-                dataIndex: hourIndex
-              })
+            if (!than.fhourTime) {
+              than.fhourTime = setInterval(function () {
+                monitorMap.dispatchAction({
+                  type: 'downplay',
+                  seriesIndex: 0
+                })
+                monitorMap.dispatchAction({
+                  type: 'highlight',
+                  seriesIndex: 0,
+                  dataIndex: hourIndex
+                })
+                monitorMap.dispatchAction({
+                  type: 'showTip',
+                  seriesIndex: 0,
+                  dataIndex: hourIndex
+                })
 
-              if (than.regions[hourIndex]) {
-                than.region = than.regions[hourIndex].name
-                than.getarticle()
-              }
-              hourIndex++
-              if (hourIndex === than.regions.length) {
-                hourIndex = 0
-              }
-            }, 10000)
+                if (than.regions[hourIndex]) {
+                  than.region = than.regions[hourIndex].name
+                  than.getarticle()
+                }
+                hourIndex++
+                if (hourIndex === than.regions.length) {
+                  hourIndex = 0
+                }
+              }, 10000)
+            }
             // 鼠标移入停止轮播
             monitorMap.on('mousemove', function (e) {
               clearInterval(than.fhourTime)
-              than.fhourTime = undefined
+              than.fhourTime = null
               monitorMap.dispatchAction({
                 type: 'downplay',
                 seriesIndex: 0
@@ -580,7 +597,7 @@ export default {
             let lineData3 = []
             let lineData4 = []
             res.data.data.dy.forEach(item => {
-              data.unshift(item.date)
+              data.unshift(item.day)
               lineData1.unshift(item.sum)
             })
             res.data.data.wx.forEach(item => {
@@ -614,10 +631,10 @@ export default {
                 top: '4%',
                 textStyle: { // 图例文字的样式
                   color: '#fff',
-                  fontSize: 25
+                  fontSize: 20
                 },
-                itemWidth: 25,
-                itemHeight: 25,
+                itemWidth: 20,
+                itemHeight: 20,
                 data: ['微信', '微博', '头条', '抖音']
               },
               grid: {
@@ -637,7 +654,7 @@ export default {
                 axisLabel: {
                   show: true,
                   textStyle: {
-                    fontSize: 25,
+                    fontSize: 20,
                     color: '#DCE8B8' // X轴文字颜色
                   }
                 },
@@ -671,7 +688,7 @@ export default {
                   'show': true
                 },
                 splitLine: {
-                  'show': false // 网格线
+                  'show': true // 网格线
                 }
               },
               series: [{
@@ -815,6 +832,9 @@ export default {
             this.option = option
             this.lineChart = lineChart
             lineChart.setOption(option)
+            window.addEventListener('resize', function () {
+              lineChart.resize()
+            })
             this.leave()
           }
         })
@@ -835,7 +855,7 @@ export default {
         if (this.faultByHourIndex >= this.option.series[0].data.length) {
           this.faultByHourIndex = 0
         }
-      }, 1000)
+      }, 3000)
     },
     // 鼠标移入
     enter () {
@@ -863,7 +883,7 @@ export default {
             this.arr.shift() // 删除数组的第一个元素
             this.animateHot = false
           }, 500)
-        }, 1000)
+        }, 3000)
       }
     },
     // 区排行榜数据
@@ -888,7 +908,7 @@ export default {
             this.att.shift() // 删除数组的第一个元素
             this.animateRank = false
           }, 500)
-        }, 1000)
+        }, 3000)
       }
     },
     // 模块切换
@@ -898,6 +918,8 @@ export default {
         type = 1
         this.articleType = 1
       }
+      this.linkageFans()
+      this.linkageTotal()
       this.monitorMap()
       this.getarticle()
     },
@@ -959,13 +981,13 @@ export default {
             this.ayy.shift() // 删除数组的第一个元素
             this.animateList = false
           }, 500)
-        }, 1000)
+        }, 3000)
       }
     },
     // 鼠标移上去停止
     StopList () {
       clearInterval(this.intNumList)
-      this.intNumList = undefined
+      this.intNumList = null
     },
     UpList () {
       if (!this.intNumList) {
@@ -994,6 +1016,29 @@ export default {
       var r = len % 3
       return r > 0 ? b.slice(0, r) + ',' + b.slice(r, len).match(/\d{3}/g).join(',') : b.slice(r, len).match(/\d{3}/g).join(',')
     },
+    // 微信微博联动数据
+    linkageFans () {
+      this.$http.get(this.$api.fans, { params: { unit: this.departmentName } })
+        .then(res => {
+          if (res.data.data) {
+            this.wxFans = this.appendNum(res.data.data.wxFansNum)
+            this.wbFans = this.appendNum(res.data.data.wbFansNum)
+          }
+        })
+        .catch(() => {
+        })
+    },
+    // 总文章发布联动数据
+    linkageTotal () {
+      this.$http.get(this.$api.totalPublish, { params: { unit: this.departmentName, type: this.articleType } })
+        .then(res => {
+          if (res.data.data) {
+            this.totalPublish = this.appendNum(res.data.data.totalPublish)
+          }
+        })
+        .catch(() => {
+        })
+    },
     // 微信微博粉丝关注数
     getFans () {
       this.$http.get(this.$api.fans)
@@ -1019,8 +1064,7 @@ export default {
     },
     // 点击跳转
     routerWeb (item) {
-      // window.location.href = item.video_url
-      window.open(item.video_url, '_blank')
+      window.open(item.videoUrl, '_blank')
     },
     activeWeb (item) {
       window.open(item.url, '_blank')
@@ -1040,7 +1084,7 @@ export default {
     getCity () {
       if (this.cityData) {
         clearInterval(this.cityData)
-        this.cityData = undefined
+        this.cityData = null
       }
       this.$http.get(this.$api.cityBehavioralData)
         .then(res => {
@@ -1073,11 +1117,14 @@ export default {
       } else {
         id = 1
       }
+      this.departmentName = item.departmentName
+      this.linkageFans()
+      this.linkageTotal()
       this.$http.get(this.$api.cityHotArticles, { params: { id: id, name: item.departmentName } })
         .then(res => {
           if (res.data.data) {
             clearInterval(this.fhourTime)
-            this.fhourTime = undefined
+            this.fhourTime = null
             this.ayy = res.data.data
             this.UpList()
           }
@@ -1090,6 +1137,11 @@ export default {
     }
   },
   mounted () {
+    // this.$once('hook:mounted', () => {
+    //   clearInterval(this.fhourTime)
+    //   clearInterval()
+    //   this.fhourTime = null
+    // })
     this.monitorMap()
     this.drawLine()
   },
@@ -1100,12 +1152,11 @@ export default {
     this.ScrollList() // 文章列表动画触发
     this.ScrollRank() // 区排行榜动画触发
     this.ScrollHot() // 热门文章排行榜动画触发
-    this.getFans() // 获取粉丝数
     this.getCity() // 获取地区数据
     this.autoPlay() // 优秀作品展示
+    this.getFans() // 获取粉丝数
     this.getTotalPublish() // 总文章发布数
-  },
-  components: {}
+  }
 }
 </script>
 <style lang="scss">
@@ -1415,7 +1466,7 @@ export default {
   position: relative;
 }
 .center-abs {
-  padding: 5px 10px;
+  padding: 20px;
   border-radius: 5px;
   background-color: rgba($color: #000, $alpha: 0.6);
   position: absolute;
@@ -1428,8 +1479,10 @@ export default {
   line-height: 1.5vw;
 }
 .center-abs-name {
-  display: block;
   width: 8vw;
+}
+.center-abs-title{
+  margin-right: 10px;
 }
 .bg-purple-light {
   padding-top: 2%;
