@@ -24,7 +24,7 @@
               </div>
               <div class="wx-follow top-box">
                 <div>
-                  <p class="name">微信关注总条数</p>
+                  <p class="name">微信已关注用户数</p>
                   <p class="num"
                      v-text="this.wxFans"></p>
                 </div>
@@ -500,6 +500,9 @@ export default {
               than.region = e.name
               than.idx = null
               than.cityShow = false
+              than.departmentName = than.region
+              than.linkageFans()
+              than.linkageTotal()
               than.getarticle()
             })
             // 地图定义轮播
