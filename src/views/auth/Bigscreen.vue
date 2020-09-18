@@ -77,7 +77,7 @@
                    v-else>
                 <p class="article-top">
                   <span style="width:10%;text-align: left;">排名</span>
-                  <span style="width:15%;text-align: left;">渠道</span>
+                  <span style="width:15%;text-align: left;">平台</span>
                   <span class="company">文章标题</span>
                   <span style="width:15%;text-align: center;">热度</span>
                 </p>
@@ -110,7 +110,7 @@
             <!-- 阅读量趋势 -->
             <div class="area-rank fine area-article">
               <p class="title">
-                近一周阅读量趋势
+                全市检察机关新媒体一周阅读量趋势
               </p>
               <div id="area-fine-tuxing"
                    class="tuxing-size"
@@ -379,19 +379,24 @@ export default {
           if (res.data.data) {
             this.regions = res.data.data
             let maxValue = []
+            let name = ''
             this.regions.forEach(item => {
               if (item.wxRead) {
                 item.value = item.wxRead
                 maxValue.push(item.wxRead)
+                name = '微信阅读数'
               } else if (item.wbDianzan) {
                 item.value = item.wbDianzan
                 maxValue.push(item.wbDianzan)
+                name = '微博点赞数'
               } else if (item.jrttRead) {
                 item.value = item.jrttRead
                 maxValue.push(item.jrttRead)
+                name = '头条阅读数'
               } else if (item.dyDianzan) {
                 item.value = item.dyDianzan
                 maxValue.push(item.dyDianzan)
+                name = '抖音点赞数'
               }
             })
             let option = {
@@ -443,7 +448,7 @@ export default {
                 textStyle: {
                   color: '#fff'
                 },
-                text: ['高', '低'], // 文本，默认为数值文本
+                text: [name + '高', name + '低'], // 文本，默认为数值文本
                 calculable: true,
                 inRange: {
                   // color: ['#a9f1fb', '#00ceff', '#0192f8']
