@@ -3,9 +3,10 @@
     <div class="big-screen">
       <!-- 头部信息 -->
       <div class="top-bg">
-        <span class="headline">新媒体大屏统计分析</span>
+        <span class="headline">全市检察机关新媒体统计分析</span>
       </div>
-      <el-row :gutter="10" class="content">
+      <el-row :gutter="10"
+              class="content">
         <!-- 左侧栏 -->
         <el-col :xs="7"
                 :sm="7"
@@ -247,9 +248,9 @@
               </div>
               <div class="article-content">
                 <p class="article-top">
-                  <span class="new-company"
+                  <span class="new-company" :class="wbActive?'companyAll':''"
                         v-text="this.typeof"></span>
-                  <span style="width:13%;text-align: left;">阅读量</span>
+                  <span style="width:13%;text-align: left;" v-if="!wbActive">阅读量</span>
                 </p>
                 <div id="area-article"
                      class="tubiao-size">
@@ -261,28 +262,27 @@
                         :key="index"
                         class="show-article">
                       <span @click="activeWeb(item)"
-                            class="new-company"
+                            class="new-company" :class="wbActive?'companyAll':''"
                             v-text="item.title"></span>
-                      <span style="width:13%;text-align: center;">{{item.readNum}}</span>
+                      <span style="width:13%;text-align: center;" v-if="!wbActive">{{item.readNum}}</span>
                     </li>
                   </ul>
                 </div>
               </div>
             </div>
             <!-- 优秀作品展示 -->
-            <div class="area-article fine area-rank">
+            <div class="area-article fine-video area-rank">
               <!-- <p class="title">
                 最新短视频展示
               </p> -->
-              <div class="tuxing-fine article-content"
-                   ref="element">
-                <div class="element-content">
-                  <el-carousel indicator-position="none"
-                               :autoplay="true"
-                               :interval="5000"
-                               :height="imgHeight">
-                    <el-carousel-item v-for="(item,index) in images"
-                                      :key="index">
+              <div class="tuxing-fine article-content video-content">
+                <div class="handle-contribute"
+                     @mouseenter="StopSwiper"
+                     @mouseleave="UpSwiper">
+                  <swiper :options="swiperOption"
+                          ref="mySwiper">
+                    <swiper-slide v-for="(item,index) in images"
+                                  :key="index">
                       <img :src="item.coverUrl"
                            alt="123"
                            class="fine-img"
@@ -291,8 +291,12 @@
                       <img :src="require('@/assets/images/text/autoPlay.png')"
                            @click="routerWeb(item)"
                            class="center-img">
-                    </el-carousel-item>
-                  </el-carousel>
+                    </swiper-slide>
+                    <!-- <div class="swiper-pagination"
+                         slot="pagination"></div> -->
+                    <div ref="prev" class="swiper-button-prev swiper-button" slot="button-prev"></div>
+                    <div ref="next" class="swiper-button-next swiper-button" slot="button-next"></div>
+                  </swiper>
                 </div>
               </div>
             </div>
@@ -304,6 +308,8 @@
 </template>
 
 <script>
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import 'swiper/css/swiper.css'
 import echarts from 'echarts/lib/echarts' // echarts
 import 'echarts/map/js/province/beijing.js'
 // import 'echarts-gl' // 3D地图插件
@@ -319,6 +325,26 @@ export default {
   name: 'Bigscreen',
   data () {
     return {
+      swiperOption: {
+        loop: true,
+        grabCursor: true,
+        autoplay: {
+          delay: 5000,
+          stopOnLastSlide: false,
+          disableOnInteraction: false
+        },
+        slidesPerView: 2,
+        // 显示分页
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true // 允许分页点击跳转
+        },
+        // 设置点击箭头
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
+        }
+      },
       departmentName: '',
       idx: null,
       imgHeight: '',
@@ -368,7 +394,21 @@ export default {
       mapIndex: '' // 地图播放所在下标
     }
   },
+  components: {
+    swiper,
+    swiperSlide
+  },
   methods: {
+    // 上一张
+    prev () {
+      console.log(this.$refs.mySwiper.$swiper)
+      this.$refs.mySwiper.$swiper.slidePrev()
+    },
+    // 下一张
+    next () {
+      console.log(this.$refs.mySwiper.$swiper)
+      this.$refs.mySwiper.$swiper.slideNext()
+    },
     // 地图
     monitorMap () {
       window.clearInterval(this.fhourTime)
@@ -400,15 +440,15 @@ export default {
               }
             })
             let option = {
-              title: {
-                text: '北京市传播统计',
-                left: 'right',
-                top: '5%',
-                textStyle: {
-                  color: '#fff',
-                  fontSize: 25
-                }
-              },
+              // title: {
+              //   text: '北京市传播统计',
+              //   left: 'right',
+              //   top: '5%',
+              //   textStyle: {
+              //     color: '#fff',
+              //     fontSize: 25
+              //   }
+              // },
               tooltip: {
                 show: true,
                 backgroundColor: 'rgba(0,0,0,.8)',
@@ -471,6 +511,10 @@ export default {
                       fontWeight: 500,
                       fontSize: 20, // 文字大小
                       backgroundColor: 'rgba(0,0,0,0)' // 透明度0清空文字背景
+                    },
+                    emphasis: {// 对应的鼠标悬浮效果
+                      show: true,
+                      textStyle: { color: '#FFFFFF' }
                     }
                   },
                   itemStyle: {
@@ -485,7 +529,7 @@ export default {
                     emphasis: {
                       borderWidth: 0.5,
                       borderColor: '#fff',
-                      areaColor: '#0cf5c6'
+                      areaColor: '#0073af'
                     }
                   }
                 }
@@ -1142,14 +1186,19 @@ export default {
     },
     titleTabs (type) {
       this.areaRank = !!type
+    },
+    StopSwiper () {
+      this.swiper.autoplay.stop()
+      this.$refs.prev.style.display = 'block'
+      this.$refs.next.style.display = 'block'
+    },
+    UpSwiper () {
+      this.swiper.autoplay.start()
+      this.$refs.prev.style.display = 'none'
+      this.$refs.next.style.display = 'none'
     }
   },
   mounted () {
-    // this.$once('hook:mounted', () => {
-    //   clearInterval(this.fhourTime)
-    //   clearInterval()
-    //   this.fhourTime = null
-    // })
     this.monitorMap()
     this.drawLine()
   },
@@ -1164,6 +1213,11 @@ export default {
     this.autoPlay() // 优秀作品展示
     this.getFans() // 获取粉丝数
     this.getTotalPublish() // 总文章发布数
+  },
+  computed: {
+    swiper () {
+      return this.$refs.mySwiper.swiper
+    }
   }
 }
 </script>
@@ -1434,17 +1488,15 @@ export default {
   cursor: pointer;
   text-align: left;
 }
+.companyAll{
+  width: 100%;
+}
 .new-company img {
   display: none;
 }
 .fine-img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
   margin: 0 auto;
-  max-width: 100%;
+  max-width: 98%;
   height: 100%;
   cursor: pointer;
 }
@@ -1489,7 +1541,7 @@ export default {
 .center-abs-name {
   width: 8vw;
 }
-.center-abs-title{
+.center-abs-title {
   margin-right: 10px;
 }
 .bg-purple-light {
@@ -1552,5 +1604,33 @@ export default {
 }
 .center-btn .btn-success {
   color: #00ceff;
+}
+.fine-video {
+  height: 50%;
+}
+.fine-video .video-content {
+  height: 100%;
+}
+.handle-contribute {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.handle-contribute .swiper-container {
+  width: 100%;
+  height: 100%;
+}
+.handle-contribute .swiper-container .swiper-slide {
+  width: 90%;
+  height: 100%;
+  line-height: 100%;
+  color: #000;
+  font-size: 16px;
+  text-align: center;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+.swiper-button{
+  display: none;
 }
 </style>
