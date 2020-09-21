@@ -271,9 +271,9 @@
             </div>
             <!-- 优秀作品展示 -->
             <div class="area-article fine area-rank">
-              <p class="title">
+              <!-- <p class="title">
                 最新短视频展示
-              </p>
+              </p> -->
               <div class="tuxing-fine article-content"
                    ref="element">
                 <div class="element-content">
