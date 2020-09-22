@@ -250,7 +250,8 @@
                 <p class="article-top">
                   <span class="new-company" :class="wbActive?'companyAll':''"
                         v-text="this.typeof"></span>
-                  <span style="width:13%;text-align: left;" v-if="!wbActive">阅读量</span>
+                  <span style="width:13%;text-align: left;" v-if="!wbActive&&!dyActive">阅读量</span>
+                  <span style="width:13%;text-align: left;" v-if="!wbActive&&dyActive">点赞数</span>
                 </p>
                 <div id="area-article"
                      class="tubiao-size">
