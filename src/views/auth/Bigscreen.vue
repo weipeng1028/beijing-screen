@@ -280,7 +280,7 @@
                 <div class="handle-contribute"
                      @mouseenter="StopSwiper"
                      @mouseleave="UpSwiper">
-                  <swiper :options="swiperOption"
+                  <swiper v-if='images.length>0' :options="swiperOption"
                           ref="mySwiper">
                     <swiper-slide v-for="(item,index) in images"
                                   :key="index">
@@ -327,6 +327,8 @@ export default {
   data () {
     return {
       swiperOption: {
+        observer: true, // 修改swiper自己或子元素时，自动初始化swiper
+        observeParents: true, // 修改swiper的父元素时，自动初始化swiper
         loop: true,
         grabCursor: true,
         autoplay: {
@@ -335,6 +337,7 @@ export default {
           disableOnInteraction: false
         },
         slidesPerView: 2,
+        loopedSlides: 2,
         // 显示分页
         pagination: {
           el: '.swiper-pagination',
